@@ -31,6 +31,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 关键: task-manager 依赖 file:../ui-kit (本地 symlink)
+      # CI 里没有本地文件 → 必须先检出 ui-kit 到同一相对路径
+      # npm ci 处理 file: 依赖时会触发 ui-kit 的 prepublishOnly → 自动 build:lib
+      - name: Checkout ui-kit (为 file: 依赖)
+        uses: actions/checkout@v4
+        with:
+          repository: qtbsjy/ui-kit
+          path: ../ui-kit
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
