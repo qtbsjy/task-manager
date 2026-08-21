@@ -32,21 +32,11 @@ jobs:
         uses: actions/checkout@v4
 
       # 关键: task-manager 依赖 file:../ui-kit (本地 symlink)
-      # CI 里没有本地文件 → 先检出 ui-kit, 再放到 ../ui-kit 相对路径
-      # npm ci 处理 file: 依赖时会触发 ui-kit 的 prepublishOnly → 自动 build:lib
-      - name: Checkout ui-kit
-        uses: actions/checkout@v4
-        with:
-          repository: qtbsjy/ui-kit
-          path: ci-ui-kit
-
-      # 把 ui-kit 放到 file:../ui-kit 期望的位置(workspace 上级)
-      # checkout 不允许 path 越界到 ../, 所以用 shell 移动
-      - name: Place ui-kit at ../ui-kit (for file: dependency)
+      # CI 里没有本地文件 → 需准备 ui-kit。用 git clone 到 ../ui-kit 相对路径
+      # (不用第二个 checkout step: path 不能越界到 ../)
+      - name: Prepare ui-kit for file dependency
         run: |
-          mkdir -p ../ui-kit
-          cp -r ./ci-ui-kit/. ../ui-kit/
-          rm -rf ./ci-ui-kit
+          git clone --depth 1 https://github.com/qtbsjy/ui-kit.git ../ui-kit
 
       - name: Setup Node
         uses: actions/setup-node@v4
