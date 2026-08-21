@@ -1,0 +1,20 @@
+/* 全局样式 —— 深色主题 */
+:root {
+  --bg: #0f172a;
+  --panel: #1e293b;
+  --accent: #4f8cff;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent); }
